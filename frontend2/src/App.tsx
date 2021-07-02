@@ -1,6 +1,8 @@
 import React from "react";
 import "./App.css";
 import { useState, useEffect } from "react";
+import { Course } from "./interfaces";
+import CourseItem from "./CourseItem";
 
 // type AppState = {
 //   message: string;
@@ -28,7 +30,7 @@ import { useState, useEffect } from "react";
 // }
 
 const App = () => {
-  const [courses, setCourses] = useState<any[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
   useEffect(() => {
     fetch("http://localhost:3000/courses/")
       .then((res) => res.json())
@@ -39,9 +41,10 @@ const App = () => {
   return (
     <div className="App">
       <ul>
-      {courses.map((item) => (
-        <li key={item.id}>{item.number} - {item.title}</li>
-      ))}
+        {courses.map((item) => (
+          <CourseItem key={item.id} course={item} />
+          // <li key={item.id}>{item.number} - {item.title}</li>
+        ))}
       </ul>
     </div>
   );
