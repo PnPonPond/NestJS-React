@@ -2,41 +2,29 @@ import React from "react";
 import "./App.css";
 import { useState, useEffect } from "react";
 import { Course } from "./interfaces";
-import CourseItem from "./CourseItem";
-
-// type AppState = {
-//   message: string;
-// };
-// class App extends React.Component<{}, AppState> {
-//   state: AppState = {
-//     message: "Default message",
-//   };
-
-//   componentDidMount(){
-//   fetch('http://localhost:3000/courses/')
-//     .then(res=>res.json())
-//     .then(obj=>{
-//       this.setState({message:obj.message});
-//     });
-// }
-//   render() {
-//     return (
-// <div>
-//   {this.state.message}
-// </div>
-//     );
-//   }
-
-// }
+import CourseItem from "./components/CourseItem";
+import NewCourseFrom from "./components/NewCourseForm";
+import CoursesService from "./services/CourseService";
 
 const App = () => {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [formVisible, setFromVisible] = useState<boolean>(false);
+
+  const toggleFormVisible = () => {
+    setFromVisible(!formVisible);
+  };
+  const fetchCourse = () => {
+    CoursesService.fetchCourses().then((courses) => {
+      setCourses(courses);
+    });
+  };
+  const handleNewCourseCreated = (newCourse: Course) => {
+    fetchCourse();
+    setFromVisible(false);
+  };
+
   useEffect(() => {
-    fetch("http://localhost:3000/courses/")
-      .then((res) => res.json())
-      .then((courses) => {
-        setCourses(courses);
-      });
+    fetchCourse();
   }, []);
   return (
     <div className="App">
@@ -45,6 +33,10 @@ const App = () => {
           <CourseItem key={item.id} course={item} />
           // <li key={item.id}>{item.number} - {item.title}</li>
         ))}
+        <button onClick={toggleFormVisible}>New Course</button>
+        {formVisible && (
+          <NewCourseFrom onNewCourseCreated={handleNewCourseCreated} />
+        )}
       </ul>
     </div>
   );

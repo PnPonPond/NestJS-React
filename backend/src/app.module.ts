@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CoursesController } from './courses.controller';
-import { CoursesService } from './courses.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import Course from './entities/courses.entity';
+import { CoursesModule } from './courses/courses.module';
+
+import Review from './courses/reviews.entity';
+import Course from './courses/courses.entity';
+
 
 @Module({
   imports: [
@@ -12,12 +14,12 @@ import Course from './entities/courses.entity';
       type: 'mongodb',
       host: 'localhost',
       database: 'test1',
-      entities: [Course],
+      entities: [Course, Review],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([Course]),
+    CoursesModule,
   ],
-  controllers: [AppController, CoursesController],
-  providers: [AppService, CoursesService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
