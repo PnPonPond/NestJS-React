@@ -8,5 +8,5 @@ export interface Review {
   id?: string;
   comment: string;
   score: number;
-  courseId: string;
+  courseId?: string;
 }
