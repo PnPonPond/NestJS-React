@@ -4,6 +4,7 @@ import { Course } from "../interfaces";
 import CourseItem from "./CourseItem";
 import NewCourseFrom from "./NewCourseForm";
 import CoursesService from "../services/CourseService";
+import { Redirect } from "react-router-dom";
 
 const CourseReview = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -33,7 +34,10 @@ const CourseReview = () => {
         ))}
         <button onClick={toggleFormVisible}>New Course</button>
         {formVisible && (
+          <div>
+            <Redirect to="/login"/>
           <NewCourseFrom onNewCourseCreated={handleNewCourseCreated} />
+          </div>
         )}
       </ul>
     </div>
